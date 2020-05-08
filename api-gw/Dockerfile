@@ -20,14 +20,14 @@ WORKDIR /src
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 # Nezabudni, ze context je z docker-compose o poschodie vyssie!
-COPY ./service1/package*.json ./
+COPY ./api-gw/package*.json ./
 
 # RUN npm install
 # If you are building your code for production
 RUN npm install
 
 # Bundle app source
-COPY ./service1/* ./
+COPY ./api-gw/* ./
 
 # Ak bezim z docker-compose, uz je nastavene tam
 # ENV BACKENDHOST='http://172.17.0.1:8001' 
