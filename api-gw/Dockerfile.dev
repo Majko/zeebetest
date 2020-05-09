@@ -1,31 +1,28 @@
 # docker build -t <nazov mojej aplikacie> .
 # docker run -p <port na beh mojej aplikacie>:3000 -d <nazov mojej aplikacie>
 
+# FROM node:12
 FROM node:alpine3.11
 
 ENV NODE_ENV=development
 
+# len na testovanie !!
+RUN ls -l
+# RUN ls 
+
 # Priprav utils
-# WORKDIR /src/
-# COPY ./utils/ .
+WORKDIR /utils
+# Context je o poschodie vyssie!
+# RUN npm install
+RUN ls -l
+RUN pwd
 
 # Create app directory
-WORKDIR /src/
+WORKDIR /src
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY ./package*.json .
-
-# RUN npm install
 # If you are building your code for production
-RUN npm install
+# RUN npm install
 
-# Bundle app source
-COPY ./frontend/ .
-
-# Ak bezim z docker-compose, uz je nastavene tam
-# ENV BACKENDHOST='http://172.17.0.1:8001' 
-
-EXPOSE 3000
-CMD [ "npm", "run", "dockerdev" ]
+EXPOSE 8000
+CMD [ "npm", "run", "start" ]
+# CMD [ "npm", "run", "dockerstart" ]
