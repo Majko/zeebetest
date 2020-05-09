@@ -1,7 +1,7 @@
 # docker build -t <nazov mojej aplikacie> .
 # docker run -p <port na beh mojej aplikacie>:3000 -d <nazov mojej aplikacie>
 
-FROM node:alpine3.11
+FROM node:alpine3.11 AS development
 ENV NODE_ENV=development
 # len na testovanie !!
 RUN ls -l
@@ -20,7 +20,7 @@ EXPOSE 8000
 CMD [ "npm", "run", "start" ]
 # CMD [ "npm", "run", "dockerstart" ]
 
-FROM node:alpine3.11
+FROM node:alpine3.11 AS production
 ENV NODE_ENV=production
 # Priprav utils
 WORKDIR /utils
