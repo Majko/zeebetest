@@ -30,7 +30,9 @@ services:
   api-gw:
     build: 
       context: ../
-      dockerfile: ./api-gw/Dockerfile.dev
+      dockerfile: ./api-gw/Dockerfile
+      # uprav ked bude treba production na production
+      target: development
     volumes:
       - ../api-gw:/src      
       - ../utils:/utils      
