@@ -4,7 +4,7 @@ log = (message)=>{
 }
 
 request = async (url, json) =>{
-    this.log('callin axios')
+    log('callin axios')
     const ret = await axios.post(url, json)
     return ret 
 }

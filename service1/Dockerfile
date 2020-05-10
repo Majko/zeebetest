@@ -5,14 +5,9 @@ FROM node:alpine3.11 AS development
 ENV NODE_ENV=development
 # Priprav utils
 WORKDIR /utils
-# Context je o poschodie vyssie!
-# RUN npm install
-RUN ls -l
 # Create app directory
 WORKDIR /src
-RUN ls -l
 # If you are building your code for production
-# RUN npm install
 EXPOSE 8000
 CMD [ "npm", "run", "start" ]
 # CMD [ "npm", "run", "dockerstart" ]
