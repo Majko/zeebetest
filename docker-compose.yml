@@ -1,23 +1,42 @@
 version: '3.6'
 services:
-  api-gw:
+  traefik:
+    image: "traefik:v2.2"
+    container_name: "traefik"
+    command:
+      # - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  service2:
     build: 
       context: ./
-      dockerfile: ./api-gw/Dockerfile
+      dockerfile: ./service2/Dockerfile
       # uprav ked bude treba production na production
       target: development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.service2.rule=Host(`service2.localhost`)"
+      - "traefik.http.routers.service2.entrypoints=web"
     volumes:
-      - ./api-gw/:/src/
+      - ./service2/:/src/
       - ./utils:/utils/
-    ports: 
-      - 8001:8000
+    # ports: 
+      # - 8001:8000
     logging:
       driver: "json-file"
       options:
         max-size: "200k"
         max-file: "10"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001"]
+      test: ["CMD", "curl", "-f", "http://service2.localhost"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -30,18 +49,22 @@ services:
       dockerfile: ./service1/Dockerfile
       # uprav ked bude treba production na production
       target: development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.service1.rule=Host(`service1.localhost`)"
+      - "traefik.http.routers.service1.entrypoints=web"
     volumes:
       - ./service1/:/src/
       - ./utils:/utils/
-    ports: 
-      - 8000:8000
+    # ports: 
+      # - 8000:8000
     logging:
       driver: "json-file"
       options:
         max-size: "200k"
         max-file: "10"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      test: ["CMD", "curl", "-f", "http://service1.localhost"]
       interval: 1m30s
       timeout: 10s
       retries: 3
