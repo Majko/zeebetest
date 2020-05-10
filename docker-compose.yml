@@ -16,13 +16,36 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+        
   
   service1:
     build: 
-      context: ../
+      context: ./
       dockerfile: ./service1/Dockerfile
+      # uprav ked bude treba production na production
+      target: development
+    volumes:
+      - ./service1/:/src/
+      - ./utils:/utils/
     ports: 
       - 8000:8000
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # udf:
     # Uncomment the next line to use a non-root user for all processes. You can also
@@ -44,14 +67,6 @@ services:
 
     # # links:
     # #   - db
-
-  # db:
-  #   image: postgres
-  #   restart: unless-stopped
-  #   ports: 
-  #     - 5432:5432
-  #   environment:
-  #     POSTGRES_PASSWORD: mysecretpassword
-  #     POSTGRES_USER: postgres
+    # "Volumes": null,
   #     POSTGRES_DB: conference
  
