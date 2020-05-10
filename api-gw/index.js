@@ -6,13 +6,12 @@ const { log , request} = require('../utils')
 module.exports = async (req, res) => {
     try {
         const js = await json(req)
-        log('received json:')
+        log('input json:')
         log(js)
-        const axios_response = await request('service1:8000',js)
-        log(axios_response)
-        send(res, 200, {
-            vratene: 'OK'
-        })
+        const axios_response = await request('http://service1:8000',js)
+        log('reaponse from service json:')
+        log(axios_response.data)
+        send(res, 200, axios_response.data)
     } catch (error) {
         log(error)
         send(res, 400, {
