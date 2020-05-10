@@ -13,6 +13,10 @@ docker-compose  up  api-gw
 na kontrolu containerov pouzi:
  docker-compose  run  api-gw sh
 
+ z dokumentacie:
+    docker-compose run [service] [command] starts a new container from the image of the service and runs the command.
+    docker-compose exec [service] [command] runs the command in the currently running container of that service.
+
  na inspekciu :
  docker inspect mictemplate_api-gw_1
 

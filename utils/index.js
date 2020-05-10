@@ -1,5 +1,5 @@
 const axios = require('axios')
-log = (message)=>{
+log = (message) => {
     console.log(message)
 }
 
@@ -10,6 +10,6 @@ request = async (url, json) =>{
 }
 
 module.exports = {
-    log:log,
-    request:request,
+    log: log,
+    request: request,
 } 
