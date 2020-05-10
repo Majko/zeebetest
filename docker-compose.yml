@@ -1,5 +1,29 @@
-version: '3'
+version: '3.6'
 services:
+  api-gw:
+    build: 
+      context: ./
+      dockerfile: ./api-gw/Dockerfile
+      # uprav ked bude treba production na production
+      target: development
+    volumes:
+      - ./api-gw/:/src/
+      - ./utils:/utils/
+    ports: 
+      - 8001:8000
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  
+  service1:
+    build: 
+      context: ../
+      dockerfile: ./service1/Dockerfile
+    ports: 
+      - 8000:8000
+
   # udf:
     # Uncomment the next line to use a non-root user for all processes. You can also
     # simply use the "remoteUser" property in devcontainer.json if you just want VS Code
@@ -21,18 +45,6 @@ services:
     # # links:
     # #   - db
 
-  service1:
-    build: 
-      context: ../
-      dockerfile: ./service1/Dockerfile
-    ports: 
-      - 8000:8000
-  api-gw:
-    build: 
-      context: ../
-      dockerfile: ./api-gw/Dockerfile
-    ports: 
-      - 8001:8000
   # db:
   #   image: postgres
   #   restart: unless-stopped
