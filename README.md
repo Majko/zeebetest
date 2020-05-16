@@ -25,3 +25,26 @@ na kontrolu containerov pouzi:
  https://docs.docker.com/develop/develop-images/multistage-build/
 
  
+
+ ## testy
+ curl -d '{"key1:"value1", "key2":"value2", "auth":"iamok"}' -H "Content-Type: application/json" -H  Host:service1.localhost -X POST http://localhost:80
+
+Vrati: {
+  "service": "service1",
+  "vratene": "OK"
+}
+
+curl -d '{"key1:"value1", "key2":"value2"}' -H "Content-Type: application/json" -H  Host:service2.localhost -X POST http://localhost:80
+
+Vrati:  {
+  "service": "backservice",
+  "vratene": "OK"
+} lebo service2 vola dalej backservice a az ten vracia hodnotu ...
+
+autentifikacia:
+curl -d '{"key1":"value1", key2":"value2", "auth":"iamnok"}' -H "Content-Type: application/json" -H  Host:authservice.localhost -X POST http://localhost:80
+
+vrati: {
+  "service": "service1",
+  "vratene": "BAD"
+}
