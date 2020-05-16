@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     const js = await json(req)
     log(js)
     send(res, 200, {
-        vratene: 'OK'
+        service: "service1", vratene: 'OK'
     })
 } catch (error) {
     log(error)
