@@ -8,8 +8,8 @@ module.exports = async (req, res) => {
         const js = await json(req)
         log('input json:')
         log(js)
-        const axios_response = await request('http://service1:8000',js)
-        log('reaponse from service json:')
+        const axios_response = await request('http://backservice:8000',js)
+        log('response from backservice json:')
         log(axios_response.data)
         send(res, 200, axios_response.data)
     } catch (error) {
