@@ -4,7 +4,7 @@ services:
     image: "traefik:v2.2"
     container_name: "traefik"
     command:
-      # - "--log.level=DEBUG"
+      - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -14,6 +14,41 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  authservice:
+    build: 
+      context: ./
+      dockerfile: ./authservice/Dockerfile
+      # uprav ked bude treba production na production
+      target: development
+    volumes:
+      - ./authservice/:/src/
+      - ./utils:/utils/
+    labels:
+      - "traefik.http.middlewares.service1.forwardauth.address=http://authservice:8000"      
+
+  service1:
+    build: 
+      context: ./
+      dockerfile: ./service1/Dockerfile
+      # uprav ked bude treba production na production
+      target: development
+    volumes:
+      - ./service1/:/src/
+      - ./utils:/utils/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.service1.rule=Host(`service1.localhost`)"
+      - "traefik.http.routers.service1.entrypoints=web"
+      # Forward authentication to example.com
+      - "traefik.http.middlewares.service1.forwardauth.address=http://authservice:8000"      
+    # CURL NEFUNGUJE S TRAEFIKOM v healthcheck !!!! 
+    # healthcheck:
+    #   test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://service1.localhost"]
+    #   interval: 1m30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s    
 
   service2:
     build: 
@@ -28,68 +63,35 @@ services:
     volumes:
       - ./service2/:/src/
       - ./utils:/utils/
-    # ports: 
-      # - 8001:8000
     logging:
       driver: "json-file"
       options:
         max-size: "200k"
         max-file: "10"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://service2.localhost"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-        
-  
-  service1:
+    # healthcheck:
+    #   test: ["CMD", "wget", "--quiet --tries=1 --spider", "http://service2.localhost"]
+    #   interval: 1m30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s
+     
+  backservice:
     build: 
       context: ./
-      dockerfile: ./service1/Dockerfile
+      dockerfile: ./backservice/Dockerfile
       # uprav ked bude treba production na production
       target: development
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.service1.rule=Host(`service1.localhost`)"
-      - "traefik.http.routers.service1.entrypoints=web"
+      - "traefik.http.routers.backservice.rule=Host(`backservice.localhost`)"
+      - "traefik.http.routers.backservice.entrypoints=web"
     volumes:
-      - ./service1/:/src/
+      - ./backservice/:/src/
       - ./utils:/utils/
-    # ports: 
-      # - 8000:8000
+    ports: 
+      - 8000:8000
     logging:
       driver: "json-file"
       options:
         max-size: "200k"
         max-file: "10"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://service1.localhost"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  # udf:
-    # Uncomment the next line to use a non-root user for all processes. You can also
-    # simply use the "remoteUser" property in devcontainer.json if you just want VS Code
-    # and its sub-processes (terminals, tasks, debugging) to execute as the user. On Linux,
-    # you may need to update USER_UID and USER_GID in .devcontainer/Dockerfile to match your
-    # user if not 1000. See https://aka.ms/vscode-remote/containers/non-root for details.
-    # user: node
-
-    # build: 
-      # context: .
-      # dockerfile: Dockerfile
-    
-    # volumes:
-    #   - ..:/workspace:cached
-      
-    # # Overrides default command so things don't shut down after the process ends.
-    # command: sleep infinity
-
-    # # links:
-    # #   - db
-    # "Volumes": null,
-  #     POSTGRES_DB: conference
- 
