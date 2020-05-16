@@ -24,8 +24,6 @@ services:
     volumes:
       - ./authservice/:/src/
       - ./utils:/utils/
-    labels:
-      - "traefik.http.middlewares.service1.forwardauth.address=http://authservice:8000"      
 
   service1:
     build: 
@@ -41,14 +39,8 @@ services:
       - "traefik.http.routers.service1.rule=Host(`service1.localhost`)"
       - "traefik.http.routers.service1.entrypoints=web"
       # Forward authentication to example.com
-      - "traefik.http.middlewares.service1.forwardauth.address=http://authservice:8000"      
-    # CURL NEFUNGUJE S TRAEFIKOM v healthcheck !!!! 
-    # healthcheck:
-    #   test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://service1.localhost"]
-    #   interval: 1m30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 40s    
+      - "traefik.http.middlewares.service1-auth.forwardauth.address=http://authservice:8000"      
+      - "traefik.http.routers.service1.middlewares=service1-auth@docker"
 
   service2:
     build: 
