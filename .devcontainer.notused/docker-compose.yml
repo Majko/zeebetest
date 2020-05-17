@@ -26,10 +26,10 @@ services:
     # links:
     #   - db
 
-  service1:
+  fe_service_auth:
     build: 
       context: ../
-      dockerfile: ./service1/Dockerfile
+      dockerfile: ./fe_service_auth/Dockerfile
     ports: 
       - 8000:8000
   api-gw:

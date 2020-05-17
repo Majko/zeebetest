@@ -5,20 +5,20 @@ ak chces aby nebral predchadzajuce layers docker pouzi no-cache pri build image
  docker-compose  build --no-cache  
 
 ak len jeden service potom:
- docker-compose  build --no-cache  api-gw
+ docker-compose  build --no-cache  auth_service
 
 a na rozbehnutie kontainera:
-docker-compose  up  api-gw
+docker-compose  up  auth_service
 
 na kontrolu containerov pouzi:
- docker-compose  run  api-gw sh
+ docker-compose  run  auth_service sh
 
  z dokumentacie:
     docker-compose run [service] [command] starts a new container from the image of the service and runs the command.
     docker-compose exec [service] [command] runs the command in the currently running container of that service.
 
  na inspekciu :
- docker inspect mictemplate_api-gw_1
+ docker inspect mictemplate_auth_service_1
 
  ## Docker
  pouzijem multi stage Dockerfile, jede stage pre development a druhy pre Prod
@@ -27,24 +27,26 @@ na kontrolu containerov pouzi:
  
 
  ## testy
- curl -d '{"key1:"value1", "key2":"value2", "auth":"iamok"}' -H "Content-Type: application/json" -H  Host:service1.localhost -X POST http://localhost:80
-
-Vrati: {
-  "service": "service1",
-  "vratene": "OK"
-}
-
-curl -d '{"key1:"value1", "key2":"value2"}' -H "Content-Type: application/json" -H  Host:service2.localhost -X POST http://localhost:80
+NEAUTHENTIFIKOVANA
+curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -H "Host:fe_service_notauth.localhost"  -X POST http://localhost:80
 
 Vrati:  {
-  "service": "backservice",
+  "service": "be_service",
   "vratene": "OK"
-} lebo service2 vola dalej backservice a az ten vracia hodnotu ...
+} lebo fe_service_notauth vola dalej be_service a az ten vracia hodnotu ...
 
 autentifikacia:
-curl -d '{"key1":"value1", key2":"value2", "auth":"iamnok"}' -H "Content-Type: application/json" -H  Host:authservice.localhost -X POST http://localhost:80
+POZITIV
+curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -H "Host:fe_service_auth.localhost" -H Authentication:iamok -X POST http://localhost:80
 
 vrati: {
-  "service": "service1",
-  "vratene": "BAD"
+  "service": "fe_service_auth",
+  "vratene": "OK"
 }
+
+NEGATIV
+curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -H "Host:fe_service_auth.localhost" -H Authentication:iamNok -X POST http://localhost:80
+
+vrati: {
+  "service": "fe_service_auth",
+  "vratene": "BAD authenticated"

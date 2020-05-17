@@ -15,45 +15,45 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  authservice:
+  auth_service:
     build: 
       context: ./
-      dockerfile: ./authservice/Dockerfile
+      dockerfile: ./auth_service/Dockerfile
       # uprav ked bude treba production na production
       target: development
     volumes:
-      - ./authservice/:/src/
+      - ./auth_service/:/src/
       - ./utils:/utils/
 
-  service1:
+  fe_service_auth:
     build: 
       context: ./
-      dockerfile: ./service1/Dockerfile
+      dockerfile: ./fe_service_auth/Dockerfile
       # uprav ked bude treba production na production
       target: development
     volumes:
-      - ./service1/:/src/
+      - ./fe_service_auth/:/src/
       - ./utils:/utils/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.service1.rule=Host(`service1.localhost`)"
-      - "traefik.http.routers.service1.entrypoints=web"
+      - "traefik.http.routers.fe_service_auth.rule=Host(`fe_service_auth.localhost`)"
+      - "traefik.http.routers.fe_service_auth.entrypoints=web"
       # Forward authentication to example.com
-      - "traefik.http.middlewares.service1-auth.forwardauth.address=http://authservice:8000"      
-      - "traefik.http.routers.service1.middlewares=service1-auth@docker"
+      - "traefik.http.middlewares.fe_service_auth-auth.forwardauth.address=http://auth_service:8000"      
+      - "traefik.http.routers.fe_service_auth.middlewares=fe_service_auth-auth@docker"
 
-  service2:
+  fe_service_notauth:
     build: 
       context: ./
-      dockerfile: ./service2/Dockerfile
+      dockerfile: ./fe_service_notauth/Dockerfile
       # uprav ked bude treba production na production
       target: development
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.service2.rule=Host(`service2.localhost`)"
-      - "traefik.http.routers.service2.entrypoints=web"
+      - "traefik.http.routers.fe_service_notauth.rule=Host(`fe_service_notauth.localhost`)"
+      - "traefik.http.routers.fe_service_notauth.entrypoints=web"
     volumes:
-      - ./service2/:/src/
+      - ./fe_service_notauth/:/src/
       - ./utils:/utils/
     logging:
       driver: "json-file"
@@ -61,24 +61,24 @@ services:
         max-size: "200k"
         max-file: "10"
     # healthcheck:
-    #   test: ["CMD", "wget", "--quiet --tries=1 --spider", "http://service2.localhost"]
+    #   test: ["CMD", "wget", "--quiet --tries=1 --spider", "http://fe_service_notauth.localhost"]
     #   interval: 1m30s
     #   timeout: 10s
     #   retries: 3
     #   start_period: 40s
      
-  backservice:
+  be_service:
     build: 
       context: ./
-      dockerfile: ./backservice/Dockerfile
+      dockerfile: ./be_service/Dockerfile
       # uprav ked bude treba production na production
       target: development
     # labels:
     #   - "traefik.enable=true"
-    #   - "traefik.http.routers.backservice.rule=Host(`backservice.localhost`)"
-    #   - "traefik.http.routers.backservice.entrypoints=web"
+    #   - "traefik.http.routers.be_service.rule=Host(`be_service.localhost`)"
+    #   - "traefik.http.routers.be_service.entrypoints=web"
     volumes:
-      - ./backservice/:/src/
+      - ./be_service/:/src/
       - ./utils:/utils/
     ports: 
       - 8000:8000
