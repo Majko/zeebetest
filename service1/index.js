@@ -5,6 +5,7 @@ const {log} = require('../utils')
 module.exports = async (req, res) => {
   try {
     const js = await json(req)
+    log("service1 handler received request:")
     log(js)
     send(res, 200, {
         service: "service1", vratene: 'OK'
