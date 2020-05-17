@@ -73,10 +73,10 @@ services:
       dockerfile: ./backservice/Dockerfile
       # uprav ked bude treba production na production
       target: development
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backservice.rule=Host(`backservice.localhost`)"
-      - "traefik.http.routers.backservice.entrypoints=web"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.backservice.rule=Host(`backservice.localhost`)"
+    #   - "traefik.http.routers.backservice.entrypoints=web"
     volumes:
       - ./backservice/:/src/
       - ./utils:/utils/
