@@ -1,0 +1,22 @@
+{
+  "name": "mictemplate",
+  "version": "1.0.0",
+  "description": "## Docker-compose  ak chces aby nebral predchadzajuce layers docker pouzi no-cache pri build image  docker-compose  build --no-cache",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Majko/mictemplate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Majko/mictemplate/issues"
+  },
+  "homepage": "https://github.com/Majko/mictemplate#readme",
+  "devDependencies": {
+    "jest": "^26.0.1"
+  }
+}
