@@ -4,9 +4,10 @@ const { log } = require('../utils')
 
 module.exports = async (req, res) => {
     try {
-        const js = await json(req)
-        log(js)
-        if (isAuthenticated(js))
+        // const js = await json(req)
+        log("service1 handler received request:")
+        log(req.headers)
+        if (isAuthenticated(req.headers))
             send(res, 200, {
                 service: "service1", vratene: 'OK'
             })
@@ -22,10 +23,8 @@ module.exports = async (req, res) => {
     }
 }
 
-isAuthenticated = (js) => {
-    log('kontrola auth')
-    log(js)
-    if (js.auth === "iamok")
+isAuthenticated = (headers) => {
+    if (headers.authentication === "iamok")
         return true
     else
         return false
