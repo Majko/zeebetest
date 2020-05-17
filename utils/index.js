@@ -3,9 +3,9 @@ log = (message) => {
     console.log(message)
 }
 
-request = async (url, json) =>{
+request = async (url, json, headers = {}) =>{
     log('callin axios')
-    const ret = await axios.post(url, json)
+    const ret = await axios.post(url, json, headers)
     return ret 
 }
 
