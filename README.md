@@ -27,7 +27,7 @@ na kontrolu containerov pouzi:
  
 
  ## testy
-NEAUTHENTIFIKOVANA
+NEAUTHENTIFIKOVANA sluzba volajuca dalsiu sluzbu v backende:
 curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -H "Host:fe_service_notauth.localhost"  -X POST http://localhost:80
 
 Vrati:  {
