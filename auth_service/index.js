@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
     try {
         // const js = await json(req)
         log("fe_service_auth handler received request:")
-        log(req.headers)
+        // log(req.headers)
         if (isAuthenticated(req.headers))
             send(res, 200, {
                 service: "fe_service_auth", vratene: 'OK authenticated'
