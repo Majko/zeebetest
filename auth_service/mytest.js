@@ -14,12 +14,9 @@ const headersAuth = {
 }
 
 get = async (headers) => {
-
     try {
         const response = await request('http://localhost:80',
             testjson, { headers: headers })
-        // console.log(response.data)
-        // console.log(new Date())
         return response
     } catch (error) {
         console.log(error)
@@ -43,4 +40,4 @@ console.timeEnd("concatenation");
 var end = new Date().getTime();
 
 // Now calculate and output the difference
-console.log(end - start , "ms");
+console.log(end - start, "ms");
