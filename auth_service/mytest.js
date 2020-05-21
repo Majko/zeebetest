@@ -2,21 +2,28 @@
 const { request } = require('../utils');
 const testjson = JSON.stringify({ meno: 'jozo', priezvisko: 'hrdlo' })
 
-const headersNoAuth = {
-    'Content-Type': 'application/json',
-    'Host': 'fe_service_notauth.localhost'
+retNoAuthHeaders = () => {
+    const headersNoAuth = {
+        'Content-Type': 'application/json',
+        'Host': 'fe_service_notauth.localhost'
+    }
+    return headersNoAuth
 }
 
-const headersAuth = {
-    'Content-Type': 'application/json',
-    'Host': 'fe_service_auth.localhost',
-    'Authentication': 'iamok'
+retAuthHeaders = () => {
+    const headersAuth = {
+        'Content-Type': 'application/json',
+        'Host': 'fe_service_auth.localhost',
+        'Authentication': 'iamok'
+    }
+    return headersAuth
 }
 
-get = async (headers) => {
+post = async (headers) => {
     try {
         const response = await request('http://localhost:80',
             testjson, { headers: headers })
+        console.log(response)
         return response
     } catch (error) {
         console.log(error)
@@ -24,20 +31,12 @@ get = async (headers) => {
 }
 // Start timing now
 console.time("concatenation");
-// Remember when we started
-var start = new Date().getTime();
 
-for (let i = 0; i < 1000; i++) {
-    get(headersNoAuth).then(() => {
-        get(headersAuth)
+for (let i = 0; i < 1; i++) {
+    post(retNoAuthHeaders()).then(() => {
+        post(retAuthHeaders())
     })
 }
 
 // ... and stop.
 console.timeEnd("concatenation");
-
-// Remember when we finished
-var end = new Date().getTime();
-
-// Now calculate and output the difference
-console.log(end - start, "ms");
