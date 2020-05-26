@@ -17,5 +17,6 @@
   },
   "dependencies": {
     "micro": "^9.3.4"
-  }
+  },
+  "jest": { "testEnvironment": "node" }
 }
