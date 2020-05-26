@@ -23,7 +23,7 @@ post = async (headers) => {
     try {
         const response = await request('http://localhost:80',
             testjson, { headers: headers })
-        console.log(response)
+        console.log(response.data)
         return response
     } catch (error) {
         console.log(error)

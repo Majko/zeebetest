@@ -50,3 +50,8 @@ curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json"
 vrati: {
   "service": "fe_service_auth",
   "vratene": "BAD authenticated"
+
+# Jest test
+do package.json je pre testovanie axios pridat : "jest": { "testEnvironment": "node" }, 
+inak dava chybu 404 non existing page
+

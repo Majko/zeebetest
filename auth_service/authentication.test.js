@@ -1,11 +1,11 @@
-
+// do package.json je pre testovanie axios pridat : "jest": { "testEnvironment": "node" }
 const { request } = require('../utils');
 const testjson = JSON.stringify({ meno: 'jozo', priezvisko: 'hrdlo' })
 
 retNoAuthHeaders = () => {
     const headersNoAuth = {
         'Content-Type': 'application/json',
-        'Host': 'fe_service_notauth.localhost'
+        Host: 'fe_service_notauth.localhost'
     }
     return headersNoAuth
 }
@@ -26,19 +26,18 @@ post = async (headers) => {
         // console.log(response)
         return response
     } catch (error) {
-        console.log(error)
+        throw error
     }
 }
 
-describe('send POST request', () => {
-    it('returns status code 2000 to non authentcation service', async () => {
+describe('send POST request',  () => {
+    test('returns status code 200 to non authentcation service', async () => {
         const response = await post(retNoAuthHeaders())
-        expect.assertions(1);
-        expect(response.statusCode).toEqual(200);
+        expect(response.status).toEqual(200);
     })
 
-    test('to  authentcation service', async () => {
-        const response = await post(retAuthHeaders())
-        expect(response.statusCode).toEqual(200);
-    })
+    // test('to  authentcation service', async () => {
+    //     const response = await post(retAuthHeaders())
+    //     expect(response.statusCode).toEqual(200);
+    // })
 })
