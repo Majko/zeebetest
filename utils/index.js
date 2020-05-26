@@ -1,4 +1,5 @@
 const axios = require('axios')
+
 log = (message) => {
     console.log(message)
 }
