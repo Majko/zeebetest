@@ -18,5 +18,6 @@
   "homepage": "https://github.com/Majko/mictemplate#readme",
   "devDependencies": {
     "jest": "^26.0.1"
-  }
+  },
+  "jest": { "testEnvironment": "node" }
 }
