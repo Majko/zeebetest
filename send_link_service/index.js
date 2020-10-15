@@ -1,5 +1,6 @@
 const {json, send} = require('micro')
 const {log} = require('../utils')
+const logic = require('./logic')
 
 /**
  * @summary Example simple service returning response 200 if everything OK
@@ -10,11 +11,10 @@ const {log} = require('../utils')
 module.exports = async (req, res) => {
   try {
     const js = await json(req)
-    log("fe_service_auth handler received request:")
+    log("be_service handler received request:")
     log(js)
-    send(res, 200, {
-        service: "fe_service_auth", vratene: 'OK'
-    })
+    const returned = await logic(js)
+    send(res, returned.status, returned.message)
 } catch (error) {
     log(error)
     send(res, 400, {

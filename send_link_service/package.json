@@ -1,5 +1,5 @@
 {
-  "name": "microrunauth",
+  "name": "microrunbe",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,8 +7,7 @@
     "start": "BACKENDHOST='http://172.17.0.1:8001' micro -l tcp://0.0.0.0:8000",
     "dev": "BACKENDHOST='http://localhost:8001' micro-dev -l tcp://0.0.0.0:8000",
     "dockerstart": "micro",
-    "dockerdev": "micro-dev",
-    "test":"jest"
+    "dockerdev": "micro-dev"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +16,5 @@
   },
   "dependencies": {
     "micro": "^9.3.4"
-  },
-  "jest": { "testEnvironment": "node" }
+  }
 }
