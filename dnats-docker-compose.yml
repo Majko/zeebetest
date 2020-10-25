@@ -1,0 +1,95 @@
+version: '3.6'
+
+services:
+  nats:
+    image: "nats:latest"
+    ports:
+      - "4222:4222"
+      - "6222:6222"
+      - "8222:8222"
+
+  # traefik:
+  #   image: "traefik:v2.2"
+  #   container_name: "traefik"
+  #   command:
+  #     # - "--log.level=DEBUG"
+  #     - "--api.insecure=true"
+  #     - "--providers.docker=true"
+  #     - "--providers.docker.exposedbydefault=false"
+  #     - "--entrypoints.web.address=:80"
+  #   ports:
+  #     - "80:80"
+  #     # - "8080:8080"
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  # Front end service. Not authenticated
+  # Domain : check_email_web_service.localhost
+  # check_email_web_service:
+  #   build: 
+  #     context: ./
+  #     dockerfile: ./check_email_web_service/Dockerfile
+  #     # uprav ked bude treba production na production
+  #     target: development
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.check_email_web_service.rule=Host(`check_email_web_service.localhost`)"
+  #     - "traefik.http.routers.check_email_web_service.entrypoints=web"
+  #   volumes:
+  #     - ./check_email_web_service/:/src/
+  #     - ./utils:/utils/
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "200k"
+  #       max-file: "10"
+
+  # Domain : send_link_web_service.localhost
+  # send_link_web_service:
+  #   build: 
+  #     context: ./
+  #     dockerfile: ./send_link_web_service/Dockerfile
+  #     # uprav ked bude treba production na production
+  #     target: development
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.send_link_web_service.rule=Host(`send_link_web_service.localhost`)"
+  #     - "traefik.http.routers.send_link_web_service.entrypoints=web"
+  #   volumes:
+  #     - ./send_link_web_service/:/src/
+  #     - ./utils:/utils/
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "200k"
+  #       max-file: "10"
+
+  email_check_nats_service:
+    build: 
+      context: ./
+      dockerfile: ./email_check_nats_service/Dockerfile
+      # uprav ked bude treba production na production
+      target: development
+    volumes:
+      - ./email_check_nats_service/:/src/
+      - ./utils:/utils/
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"        
+
+  email_check_processor_service:
+    build: 
+      context: ./
+      dockerfile: ./email_check_processor_service/Dockerfile
+      # uprav ked bude treba production na production
+      target: development
+    volumes:
+      - ./email_check_processor_service/:/src/
+      - ./utils:/utils/
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"    

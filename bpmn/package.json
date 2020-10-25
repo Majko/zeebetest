@@ -1,15 +1,14 @@
 {
-  "name": "utils",
+  "name": "bpmn",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "deployDiagram.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "axios": "^0.19.2",
-    "nats": "^1.4.12"
-  },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "zeebe-node": "^0.25.0"
+  }
 }

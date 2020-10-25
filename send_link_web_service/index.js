@@ -11,7 +11,7 @@ const logic = require('./logic')
 module.exports = async (req, res) => {
   try {
     const js = await json(req)
-    log("be_service handler received request:")
+    log("send_link_web_service handler received request:")
     log(js)
     const returned = await logic(js)
     send(res, returned.status, returned.message)

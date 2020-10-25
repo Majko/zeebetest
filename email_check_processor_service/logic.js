@@ -3,7 +3,7 @@ module.exports = async (json) => {
     const name = json.name
     if (name === 'maros')
         // if ok, return result in form of object with status=XXX, message
-        return { status: 200, message: { service: "be_service", vratene: 'OK' } }
+        return { status: 200, message: { service: "send_link_web_service", vratene: 'OK' } }
     else
         throw new Error('Wrong name')
 }

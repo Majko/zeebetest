@@ -28,16 +28,19 @@ na kontrolu containerov pouzi:
 
  ## testy
 NEAUTHENTIFIKOVANA sluzba volajuca dalsiu sluzbu v backende:
-curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -H "Host:fe_service_notauth.localhost"  -X POST http://localhost:80
+curl -d '{"key1":"value1", "name":"maros"}' -H "Content-Type: application/json" -H "Host:check_email_web_service.localhost"  -X POST http://localhost:80
 
 Vrati:  {
-  "service": "be_service",
+  "service": "check_email_web_service",
   "vratene": "OK"
-} lebo fe_service_notauth vola dalej be_service a az ten vracia hodnotu ...
+} 
+alebo 
+curl -d '{"key1":"value1", "name":"maros"}' -H "Content-Type: application/json" -H "Host:send_link_web_service.localhost"  -X POST http://localhost:80
+
 
 autentifikacia:
 POZITIV
-curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -H "Host:fe_service_auth.localhost" -H Authentication:iamok -X POST http://localhost:80
+curl -d '{"key1":"value1", "name":"maros"}' -H "Content-Type: application/json" -H "Host:fe_service_auth.localhost" -H Authentication:iamok -X POST http://localhost:80
 
 vrati: {
   "service": "fe_service_auth",
